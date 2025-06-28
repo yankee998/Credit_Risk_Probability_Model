@@ -31,7 +31,7 @@ This project aims to develop a credit risk model using transactional data from t
 [![Build Status](https://img.shields.io/github/actions/workflow/status/yankee998/Credit_Risk_Probability_Model/ci.yml?branch=main&label=CI%20Pipeline)](https://github.com/yankee998/Credit_Risk_Probability_Model/actions)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-*Note: Update the Build Status badge URL with your repository link and ensure GitHub Actions is configured.*
+
 
 ---
 
