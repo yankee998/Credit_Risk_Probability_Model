@@ -1,6 +1,6 @@
 pandas==2.2.2
 numpy==1.26.4
-scikit-learn==1.5.0
+scikit-learn>=1.4.0,<1.6.0  # Allow a range to find compatible wheels
 jupyter==1.0.0
 fastapi==0.110.0
 uvicorn==0.29.0
