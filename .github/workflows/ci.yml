@@ -1,42 +1,37 @@
-name: Minimal CI Pipeline
+name: CI/CD Pipeline for Credit Risk Model
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-check:
+  build-and-test:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13.3'
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
 
-      - name: Install minimal dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-ci.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      continue-on-error: false
 
-      - name: Lint code with flake8
-        run: |
-          flake8 . --max-line-length=88 --extend-ignore=E203
+    - name: Lint code
+      run: |
+        pip install flake8
+        flake8 src/ tests/ --max-line-length=120 --ignore=E203,W503
+      continue-on-error: false
 
-      - name: Build and run notebook
-        run: |
-          jupyter nbconvert --to notebook --execute notebooks/2.0-eda-task2.ipynb --output notebooks/2.0-eda-task2-output.ipynb
-
-      - name: Upload notebook output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: notebook-output
-          path: notebooks/2.0-eda-task2-output.ipynb
+    - name: Run tests
+      run: |
+        pytest tests/ -v --maxfail=1
+      continue-on-error: false
