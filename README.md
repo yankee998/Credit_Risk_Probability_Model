@@ -1,74 +1,176 @@
-# 🎉 Credit Risk Probability Model 🎉
+# 🎉 Credit Risk Probability Model
 
-Welcome to the **Credit Risk Probability Model** project! 🚀 This repository contains an interim submission for Task 1: Understanding Credit Risk, built with Python 3.13.3 on Windows. Let's dive into the details! 🌟
+Welcome to the **Credit Risk Probability Model** project! 🚀 This repository implements a state-of-the-art solution to predict credit risk using the Xente dataset, following the B5W5 challenge requirements. Built with Python, MLflow, FastAPI, and Docker, this project takes you from data exploration to a fully containerized API with CI/CD integration. Dive in and explore the journey from Task 1 to Task 6! 🌟
 
----
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yankee998/Credit_Risk_Probability_Model/ci.yml?branch=main&label=CI%20Status)](https://github.com/yankee998/Credit_Risk_Probability_Model/actions)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/downloads/release/python-3119/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-## 📊 Project Overview
+## 📋 Table of Contents
+- [🌟 Project Overview](#-project-overview)
+- [📊 Task Breakdown](#-task-breakdown)
+  - [Task 1: Data Exploration](#task-1-data-exploration)
+  - [Task 2: Data Preprocessing](#task-2-data-preprocessing)
+  - [Task 3: Feature Engineering](#task-3-feature-engineering)
+  - [Task 4: Proxy Target Variable Engineering](#task-4-proxy-target-variable-engineering)
+  - [Task 5: Model Training and Tracking](#task-5-model-training-and-tracking)
+  - [Task 6: Model Deployment and Continuous Integration](#task-6-model-deployment-and-continuous-integration)
+- [🚀 Getting Started](#-getting-started)
+- [🛠️ Usage](#-usage)
+- [📦 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📬 Contact](#-contact)
+- [📜 License](#-license)
 
-This project aims to develop a credit risk model using transactional data from the Xente dataset. The interim submission focuses on exploratory data analysis (EDA) and business understanding per the Basel II Accord requirements. Stay tuned for future model development! 🔍
+## 🌟 Project Overview
+This project leverages the Xente dataset to build a credit risk prediction model. Starting with exploratory data analysis, it progresses through preprocessing, feature engineering, model training with MLflow tracking, and culminates in a containerized FastAPI API with a CI/CD pipeline. Perfect for data scientists, developers, and enthusiasts looking to learn or deploy machine learning solutions!
 
-### 🛠️ Tech Stack
-- **Language**: Python 3.13.3
-- **Libraries**: pandas, numpy, matplotlib, seaborn, scikit-learn, fastapi
-- **Tools**: VS Code, GitHub Actions, Jupyter Notebook
-- **CI/CD**: Automated testing and linting with GitHub Actions
+- **Dataset**: [Google Drive](https://drive.google.com/drive/folders/1tcSdGtCKnMp1qZL_wVC_yVxMrAm28vcx) | [Kaggle](https://www.kaggle.com/datasets/atwine/xente-challenge/data)
+- **Tech Stack**: Python 3.11, Pandas, Scikit-learn, MLflow, FastAPI, Uvicorn, Docker, GitHub Actions
+- **Status**: Actively developed as of July 01, 2025
 
----
+## 📊 Task Breakdown
 
-## ✨ Features
+### Task 1: Data Exploration
+- **Script**: `src/data_exploration.py`
+- **Goal**: Analyze the raw Xente dataset (`task1_raw_data.csv`) to understand distributions, missing values, and correlations.
+- **Features**:
+  - Visualizations of transaction amounts, fraud rates, and categorical variables.
+  - Identification of 91,920 duplicate `CustomerId` values and negative `Amount` entries.
+- **Output**: `data/processed/task1_eda_output.csv` with insights.
 
-- 📈 Interactive EDA in `1.0-edai.ipynb` with visualizations
-- ✅ Automated CI/CD pipeline with linting and testing
-- 📝 Business understanding aligned with Basel II
-- 🌐 Deployable with FastAPI (future scope)
+### Task 2: Data Preprocessing
+- **Script**: `src/data_preprocessing.py`
+- **Goal**: Clean and prepare the data for modeling.
+- **Features**:
+  - Handles missing values with imputation (mean for numerical, 'missing' for categorical).
+  - Removes duplicates where appropriate, retaining 91,920 `CustomerId` duplicates as transactional data.
+  - Outputs `data/processed/task2_eda_data.csv` with precomputed time features.
 
----
+### Task 3: Feature Engineering
+- **Script**: `src/feature_engineering.py`
+- **Goal**: Enhance the dataset with engineered features.
+- **Features**:
+  - **Aggregate Features**: Total transaction amount, average, count, and standard deviation per customer.
+  - **Time-Based Features**: Hour, day, month, year from `TransactionStartTime` (skipped if precomputed).
+  - **Categorical Encoding**: One-hot encoding for `ProductCategory`, `ChannelId`, `PricingStrategy`.
+  - **Normalization**: StandardScaler for numerical features.
+  - **WoE Transformation**: Custom `CustomWOETransformer` for categorical variables.
+- **Tests**: `tests/test_feature_engineering.py` validates feature extraction and aggregation.
 
-## 🏆 Badges
+### Task 4: Proxy Target Variable Engineering
+- **Script**: `src/feature_engineering.py`
+- **Goal**: Create a proxy target (`is_high_risk`) using RFM clustering.
+- **Features**:
+  - **RFM Metrics**: Recency, Frequency, Monetary per `CustomerId`.
+  - **Clustering**: K-Means with 3 clusters, identifying high-risk cluster (lowest `Monetary` fallback).
+  - **Fixes**: Handles 91,920 duplicates and 192 negative `Monetary` values with warnings.
+- **Tests**: Updated `tests/test_feature_engineering.py` for RFM integration.
 
-[![Python Version](https://img.shields.io/badge/Python-3.13.3-blue.svg)](https://www.python.org/downloads/release/python-3133/)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/yankee998/Credit_Risk_Probability_Model/ci.yml?branch=main&label=CI%20Pipeline)](https://github.com/yankee998/Credit_Risk_Probability_Model/actions)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+### Task 5: Model Training and Tracking
+- **Script**: `src/model_training.py`
+- **Goal**: Train and track models with MLflow.
+- **Features**:
+  - **Data Splitting**: 80-20 train-test split, stratified by `is_high_risk`.
+  - **Model Selection**: Logistic Regression, Random Forest, Gradient Boosting.
+  - **Hyperparameter Tuning**: Grid Search (Logistic) and Randomized Search (others).
+  - **Evaluation**: Accuracy, Precision, Recall, F1, ROC-AUC.
+  - **Tracking**: MLflow logs parameters, metrics, and registers the best model (F1-based).
+- **Setup**: Requires a local MLflow server at `http://localhost:5000`.
+- **Tests**: `tests/test_data_processing.py` for `evaluate_model`.
 
-
-
----
-
-## 📋 Credit Scoring Business Understanding
-
-<details>
-<summary>🔍 Click to Expand Business Insights</summary>
-
-### How does the Basel II Accord’s emphasis on risk measurement influence our need for an interpretable and well-documented model?
-The Basel II Accord prioritizes accurate risk measurement to set capital requirements, requiring interpretable and well-documented models for regulatory validation. This ensures transparency, enabling regulators to assess risk calculations and ensure compliance. An interpretable model like Logistic Regression with Weight of Evidence (WoE) supports this by providing clear, auditable predictions, aligning with Basel II’s governance standards. 🌐
-
-### Since we lack a direct "default" label, why is creating a proxy variable necessary, and what are the potential business risks of making predictions based on this proxy?
-The dataset lacks a direct "default" label, necessitating FraudResult as a proxy to estimate credit risk, as fraud may indicate default likelihood for model training. However, business risks include misclassification if the proxy inaccurately reflects default, potentially leading to poor credit decisions, financial losses, or regulatory issues due to unreliable predictions. ⚠️
-
-### What are the key trade-offs between using a simple, interpretable model (like Logistic Regression with WoE) versus a complex, high-performance model (like Gradient Boosting) in a regulated financial context?
-A simple model like Logistic Regression with WoE offers interpretability and regulatory compliance, facilitating validation under Basel II, but it may lack accuracy on complex data. A complex model like Gradient Boosting provides higher predictive power by modeling non-linear patterns, yet its lack of transparency complicates regulatory approval and increases validation efforts. The trade-off balances compliance and explainability against accuracy, often favoring simpler models unless complex ones are thoroughly documented. ⚖️
-</details>
-
----
-
-## 📂 Directory Structure
-
-| Folder/File            | Description                          |
-|-------------------------|--------------------------------------|
-| `data/raw/`            | Raw datasets (e.g., `data.csv`)      |
-| `data/processed/`      | Processed data outputs               |
-| `notebooks/1.0-edai.ipynb` | EDA notebook with visualizations |
-| `src/`                 | Source code for data processing      |
-| `tests/`               | Unit tests                           |
-| `.github/workflows/ci.yml` | CI/CD configuration         |
-| `requirements.txt`     | Project dependencies                 |
-
----
+### Task 6: Model Deployment and Continuous Integration
+- **Scripts**: `src/api/main.py`, `src/api/pydantic_models.py`
+- **Goal**: Deploy the model as a containerized API with CI/CD.
+- **Features**:
+  - **API**: FastAPI with `/predict` endpoint, loading the best model from MLflow.
+  - **Validation**: Pydantic models for request/response data.
+  - **Containerization**: `Dockerfile` and `docker-compose.yml` for a Uvicorn-served app.
+  - **CI/CD**: `.github/workflows/ci.yml` runs Flake8 linting and Pytest on push to `main`.
+- **Deployment**: Accessible at `http://localhost:8000/predict`.
 
 ## 🚀 Getting Started
+Ready to explore or contribute? Follow these steps:
 
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/yankee998/Credit_Risk_Probability_Model.git
-   cd Credit Risk Probability Model
+   cd "Credit Risk Probability Model"
+   ```
+
+2. **Set Up Environment**:
+   - Ensure Python 3.11.9 (or 3.13.3) is installed.
+   - Create a virtual environment:
+     ```bash
+     python -m venv venv
+     .\venv\Scripts\activate
+     ```
+   - Install dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+3. **Prepare Data**:
+   - Download the dataset from [Google Drive](https://drive.google.com/drive/folders/1tcSdGtCKnMp1qZL_wVC_yVxMrAm28vcx) or [Kaggle](https://www.kaggle.com/datasets/atwine/xente-challenge/data).
+   - Place `task2_eda_data.csv` in `data/processed/`.
+
+4. **Start MLflow Server** (for Tasks 5 & 6):
+   - In a separate terminal:
+     ```bash
+     .\venv\Scripts\activate
+     mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri file:///C:/Users/Skyline/Credit%20Risk%20Probability%20Model/mlruns
+     ```
+   - Access UI at `http://localhost:5000`.
+
+## 🛠️ Usage
+- **Run Data Exploration**:
+  ```bash
+  python -m src.data_exploration
+  ```
+- **Run Preprocessing**:
+  ```bash
+  python -m src.data_preprocessing
+  ```
+- **Run Feature Engineering**:
+  ```bash
+  python -m src.feature_engineering
+  ```
+- **Train Models**:
+  ```bash
+  python -m src.model_training
+  ```
+- **Test the Code**:
+  ```bash
+  pytest tests/ -v
+  ```
+
+## 📦 Deployment
+Deploy the API with Docker:
+1. Build and run the container:
+   ```bash
+   docker-compose up --build
+   ```
+2. Test the API (e.g., with `curl`):
+   ```bash
+   curl -X POST "http://localhost:8000/predict" -H "Content-Type: application/json" -d "{\"Amount\": 100.0, \"Value\": 100.0, \"TotalTransactionAmount\": 500.0, \"AverageTransactionAmount\": 125.0, \"TransactionCount\": 4, \"StdTransactionAmount\": 50.0, \"TransactionHour\": 10, \"TransactionDay\": 1, \"TransactionMonth\": 1, \"TransactionYear\": 2023, \"ProductCategory\": \"airtime\", \"ChannelId\": 0, \"PricingStrategy\": 1}"
+   ```
+   - Expected response: `{"risk_probability": <float>}`
+
+## 🤝 Contributing
+Love this project? Want to make it better? Here’s how:
+- Fork the repository.
+- Create a feature branch (`git checkout -b feature-name`).
+- Commit your changes (`git commit -m "Add feature"`).
+- Push to the branch (`git push origin feature-name`).
+- Open a Pull Request with a clear description.
+
+📢 **Issues or Suggestions?** Open an issue on GitHub!
+
+## 📬 Contact
+- **Email**: yaredgenana99@gmail.com
+- **Last Updated**: 07:04 PM EAT, July 01, 2025
+
+## 📜 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
