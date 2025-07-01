@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/a35f9511d89d4c61b1e42abf5cfc9aea/artifacts
+deleted_time: 1751385037601
+end_time: 1751384452770
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: a35f9511d89d4c61b1e42abf5cfc9aea
+run_name: LogisticRegression
+run_uuid: a35f9511d89d4c61b1e42abf5cfc9aea
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751384439759
+status: 4
+tags: []
+user_id: Skyline

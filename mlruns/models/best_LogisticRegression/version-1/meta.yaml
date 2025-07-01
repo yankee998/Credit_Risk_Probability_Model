@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1751385119659
+current_stage: None
+description: ''
+last_updated_timestamp: 1751385119659
+name: best_LogisticRegression
+run_id: e03ee200687947b19f71e46aed6e3994
+run_link: ''
+source: mlflow-artifacts:/0/e03ee200687947b19f71e46aed6e3994/artifacts/best_model_LogisticRegression
+status: READY
+status_message: null
+storage_location: mlflow-artifacts:/0/e03ee200687947b19f71e46aed6e3994/artifacts/best_model_LogisticRegression
+user_id: null
+version: 1

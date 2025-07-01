@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "num__Amount": -0.04637113647159194,
+    "num__Value": -0.07229109433980146,
+    "num__TotalTransactionAmount": 0.170117935910918,
+    "num__AverageTransactionAmount": -0.0676228544612966,
+    "num__TransactionCount": -0.3118310092154473,
+    "num__StdTransactionAmount": -0.16701636671772688,
+    "num__TransactionHour": -2.1555298870762223,
+    "num__TransactionDay": -0.1007386279860688,
+    "num__TransactionMonth": 0.8486842422683367,
+    "num__TransactionYear": -0.9942462363007603,
+    "cat__ProductCategory_airtime": 1.0,
+    "cat__ProductCategory_data_bundles": 0.0,
+    "cat__ProductCategory_financial_services": 0.0,
+    "cat__ProductCategory_movies": 0.0,
+    "cat__ProductCategory_other": 0.0,
+    "cat__ProductCategory_ticket": 0.0,
+    "cat__ProductCategory_transport": 0.0,
+    "cat__ProductCategory_tv": 0.0,
+    "cat__ProductCategory_utility_bill": 0.0,
+    "cat__ChannelId_0": 0.0,
+    "cat__ChannelId_1": 0.0,
+    "cat__ChannelId_2": 1.0,
+    "cat__ChannelId_3": 0.0,
+    "cat__PricingStrategy_0": 0.0,
+    "cat__PricingStrategy_1": 0.0,
+    "cat__PricingStrategy_2": 1.0,
+    "cat__PricingStrategy_3": 0.0,
+    "is_high_risk": 0
+  }
+}

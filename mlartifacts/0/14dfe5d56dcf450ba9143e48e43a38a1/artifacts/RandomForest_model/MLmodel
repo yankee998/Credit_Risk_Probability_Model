@@ -1,0 +1,51 @@
+artifact_path: RandomForest_model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.0
+mlflow_version: 2.17.0
+model_size_bytes: 87031
+model_uuid: 8610699e75284769b1958a63ae557035
+run_id: 14dfe5d56dcf450ba9143e48e43a38a1
+saved_input_example_info:
+  artifact_path: input_example.json
+  serving_input_path: serving_input_example.json
+  type: json_object
+signature:
+  inputs: '[{"type": "double", "name": "num__Amount", "required": true}, {"type":
+    "double", "name": "num__Value", "required": true}, {"type": "double", "name":
+    "num__TotalTransactionAmount", "required": true}, {"type": "double", "name": "num__AverageTransactionAmount",
+    "required": true}, {"type": "double", "name": "num__TransactionCount", "required":
+    true}, {"type": "double", "name": "num__StdTransactionAmount", "required": true},
+    {"type": "double", "name": "num__TransactionHour", "required": true}, {"type":
+    "double", "name": "num__TransactionDay", "required": true}, {"type": "double",
+    "name": "num__TransactionMonth", "required": true}, {"type": "double", "name":
+    "num__TransactionYear", "required": true}, {"type": "double", "name": "cat__ProductCategory_airtime",
+    "required": true}, {"type": "double", "name": "cat__ProductCategory_data_bundles",
+    "required": true}, {"type": "double", "name": "cat__ProductCategory_financial_services",
+    "required": true}, {"type": "double", "name": "cat__ProductCategory_movies", "required":
+    true}, {"type": "double", "name": "cat__ProductCategory_other", "required": true},
+    {"type": "double", "name": "cat__ProductCategory_ticket", "required": true}, {"type":
+    "double", "name": "cat__ProductCategory_transport", "required": true}, {"type":
+    "double", "name": "cat__ProductCategory_tv", "required": true}, {"type": "double",
+    "name": "cat__ProductCategory_utility_bill", "required": true}, {"type": "double",
+    "name": "cat__ChannelId_0", "required": true}, {"type": "double", "name": "cat__ChannelId_1",
+    "required": true}, {"type": "double", "name": "cat__ChannelId_2", "required":
+    true}, {"type": "double", "name": "cat__ChannelId_3", "required": true}, {"type":
+    "double", "name": "cat__PricingStrategy_0", "required": true}, {"type": "double",
+    "name": "cat__PricingStrategy_1", "required": true}, {"type": "double", "name":
+    "cat__PricingStrategy_2", "required": true}, {"type": "double", "name": "cat__PricingStrategy_3",
+    "required": true}, {"type": "long", "name": "is_high_risk", "required": true}]'
+  outputs: '[{"type": "integer", "required": true}]'
+  params: null
+utc_time_created: '2025-07-01 15:50:00.722732'

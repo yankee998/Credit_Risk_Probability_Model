@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/14dfe5d56dcf450ba9143e48e43a38a1/artifacts
+end_time: 1751385008383
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 14dfe5d56dcf450ba9143e48e43a38a1
+run_name: RandomForest
+run_uuid: 14dfe5d56dcf450ba9143e48e43a38a1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751384960836
+status: 3
+tags: []
+user_id: Skyline
